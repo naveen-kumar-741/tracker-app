@@ -53,19 +53,7 @@ const Cube: React.FC<ICubeProps> = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Observe natural widths of child faces (untransformed)
-    const observer = new ResizeObserver(() => {
-      const maxWidth = Math.max(
-        ...Array.from(containerRef.current!.children).map((child) => {
-          return (child as HTMLElement).offsetWidth;
-        })
-      );
-
-      setDynamicWidth(maxWidth);
-    });
-
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
+    setDynamicWidth(containerRef?.current.offsetWidth);
   }, [units]);
 
   if (!show) {
@@ -80,18 +68,12 @@ const Cube: React.FC<ICubeProps> = ({
         className="absolute opacity-0 pointer-events-none"
         style={{ position: 'absolute' }}
       >
-        {faces.map((face) => (
-          <div
-            key={face.name}
-            className="inline-flex p-1"
-            style={{ height: size }}
-          >
-            <Typography
-              label={`${units}${suffix}`}
-              variant={typographyVariants.body_14_600}
-            />
-          </div>
-        ))}
+        <div className="inline-flex p-1 text-nowrap" style={{ height: size }}>
+          <Typography
+            label={`${String(units).padStart(2, '0')}${suffix}`}
+            variant={typographyVariants.body_14_600}
+          />
+        </div>
       </div>
 
       {/* ACTUAL 3D CUBE */}
