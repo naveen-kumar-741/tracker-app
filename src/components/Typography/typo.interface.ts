@@ -10,12 +10,16 @@ export const typographyVariants = {
   heading_30_500: 'text-3xl font-medium',
   heading_30_600: 'text-3xl font-semibold',
   heading_30_700: 'text-3xl font-bold',
-
   // === 24px Headings ===
   heading_24_400: 'text-2xl font-normal',
   heading_24_500: 'text-2xl font-medium',
   heading_24_600: 'text-2xl font-semibold',
   heading_24_700: 'text-2xl font-bold',
+
+  sub_heading_18_400: 'text-lg font-normal',
+  sub_heading_18_500: 'text-lg font-medium',
+  sub_heading_18_600: 'text-lg font-semibold',
+  sub_heading_18_700: 'text-lg font-bold',
 
   // === 16px Body ===
   body_16_400: 'text-base font-normal',

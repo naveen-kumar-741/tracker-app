@@ -26,7 +26,7 @@ const Typography: React.FC<TypographyProps> = ({
 
   return (
     <Tag
-      className={`${variant} ${className} leading-none text-(--dark)`}
+      className={`${variant} leading-none text-(--dark) ${className}`}
       title={title}
     >
       {label}

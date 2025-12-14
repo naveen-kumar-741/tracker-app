@@ -117,7 +117,7 @@ const Cube: React.FC<ICubeProps> = ({
               className="backface-hidden absolute overflow-hidden flex justify-center items-center p-1"
             >
               <Typography
-                label={`${units}${suffix}`}
+                label={`${String(units).padStart(2, '0')}${suffix}`}
                 variant={typographyVariants.body_14_600}
               />
             </div>

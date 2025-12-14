@@ -1,7 +1,9 @@
 import Dexie from 'dexie';
-import type { INode } from 'react-accessible-treeview';
-import type { IFlatMetadata } from 'react-accessible-treeview/dist/TreeView/utils';
-import type { ITag } from '../components/Event/event.interface';
+import type {
+  IEventType,
+  IEventTypePayload,
+  ITagPayload,
+} from '../components/Event/event.interface';
 
 // export interface UserData {
 //   firstName: string;
@@ -13,12 +15,19 @@ import type { ITag } from '../components/Event/event.interface';
 
 export const db = new Dexie('trackerDB');
 db.version(1).stores({
-  events: '++id, name, parent, children, metadata',
+  events: '++id, name, parent, children, metadata, tagId',
   tags: '++id, name',
 });
 
-export const addEvent = async (event: INode<IFlatMetadata>) => {
-  await db.table('events').add(event);
+export const addEvent = async (event: IEventTypePayload) => {
+  debugger;
+  const addedEventId = await db.table('events').add(event);
+
+  if (event.parent) {
+    const parent = await db.table('events').get(event.parent);
+    parent.children = [...parent.children, addedEventId];
+    updateEvent(parent.id, parent);
+  }
 };
 
 export const getAllEvents = async () => {
@@ -26,14 +35,13 @@ export const getAllEvents = async () => {
   return user;
 };
 
-export const bulkAddTags = async (event: ITag[]) => {
+export const bulkAddTags = async (event: ITagPayload[]) => {
   await db.table('tags').bulkAdd(event);
 };
 
-// export const updateData = async (id: number, data: UserData) => {
-//   await db.table('users').update(id, data);
-//   console.log(`User ${id} updated to:`, data);
-// };
+export const updateEvent = async (id: number, data: IEventType) => {
+  await db.table('events').update(id, data);
+};
 
 // export const deleteData = async (id: number) => {
 //   await db.table('users').delete(id);

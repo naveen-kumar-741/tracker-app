@@ -5,10 +5,13 @@ import Event from '../components/Event/Event';
 import CountDown from '../components/CountDown/CountDown';
 import dayjs from 'dayjs';
 import EventHeader from '../components/Event/EventHeader';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db } from '../utils/indexedDB';
+import { useMemo } from 'react';
 
 const EventsPage: React.FC = () => {
   const data: INode<IFlatMetadata>[] = [
-    { name: 'short term', children: [1, 4, 9, 10, 11], id: 0, parent: null },
+    { name: 'parent', children: [1, 4, 9, 10, 11], id: 0, parent: null },
     {
       name: 'Event 1',
       children: [2, 3],
@@ -30,27 +33,35 @@ const EventsPage: React.FC = () => {
     { name: 'Event 10', id: 10, parent: 0, children: [] },
     { name: 'Event 11', id: 11, parent: 0, children: [] },
   ];
+  const events = useLiveQuery<INode<IFlatMetadata>[]>(
+    () => db.table('events').toArray(),
+    []
+  );
+
+  const formattedData = useMemo(() => {
+    if (!events) return [];
+    const eventIds = events
+      ?.filter((event) => event.parent === 0)
+      ?.map((event) => event.id);
+    return [
+      { name: 'parent', children: eventIds, id: 0, parent: null },
+      ...events,
+    ];
+  }, [events]);
+
+  console.log('events', events);
+
   return (
     <section className="flex flex-col w-full">
       <EventHeader />
-      <TreeView
-        data={data}
-        multiSelect
-        className="p-2.5"
-        nodeRenderer={Event}
-      />
-
-      <CountDown
-        dateTime={dayjs('2023-12-14 17:30:00')
-          .utc()
-          .format('YYYY-MM-DDTHH:mm:ss[Z]')}
-        pausedTimes={[
-          {
-            start: '2024-06-01 10:00:00',
-            // end: '2024-06-10 18:00:00',
-          },
-        ]}
-      />
+      {formattedData?.length > 0 && (
+        <TreeView
+          data={formattedData}
+          multiSelect
+          className="p-2.5"
+          nodeRenderer={Event}
+        />
+      )}
     </section>
   );
 };

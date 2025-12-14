@@ -11,17 +11,22 @@
   },
   "dependencies": {
     "@apollo/client": "^4.0.9",
+    "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.17",
     "dayjs": "^1.11.19",
     "dexie": "^4.2.1",
     "dexie-react-hooks": "^4.2.0",
     "react": "^19.2.0",
     "react-accessible-treeview": "^2.11.2",
+    "react-datepicker": "^9.0.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.68.0",
     "react-intl": "^7.1.14",
     "react-router-dom": "^7.10.1",
+    "react-select": "^5.10.2",
     "tailwindcss": "^4.1.17",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

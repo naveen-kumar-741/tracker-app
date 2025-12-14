@@ -19,7 +19,7 @@ const Event = ({
       style={{ paddingLeft: 20 * (level - 1) }}
       className="min-w-75"
     >
-      <div className="py-1 px-2 bg-(--bg-dark-05) mb-1 rounded-xs flex gap-1 items-center ">
+      <div className="py-1 px-2 bg-(--primary-05) mb-1 rounded-xs flex gap-1 items-center ">
         {isBranch && (
           <DownArrow
             className={`h-5 w-5 transition-all ${
