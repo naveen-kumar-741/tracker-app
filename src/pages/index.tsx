@@ -20,6 +20,10 @@ const App = () => {
               path="/stop-watch"
               element={<CommonLayout component={StopWatch} />}
             />
+            <Route
+              path="/settings"
+              element={<CommonLayout component={StopWatch} />}
+            />
             <Route path="*" element={<>Not Found Page</>} />
           </Routes>
         </BrowserRouter>

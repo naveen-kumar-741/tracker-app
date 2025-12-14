@@ -4,6 +4,7 @@ import type { IFlatMetadata } from 'react-accessible-treeview/dist/TreeView/util
 import Event from '../components/Event/Event';
 import CountDown from '../components/CountDown/CountDown';
 import dayjs from 'dayjs';
+import EventHeader from '../components/Event/EventHeader';
 
 const EventsPage: React.FC = () => {
   const data: INode<IFlatMetadata>[] = [
@@ -30,18 +31,25 @@ const EventsPage: React.FC = () => {
     { name: 'Event 11', id: 11, parent: 0, children: [] },
   ];
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col w-full">
+      <EventHeader />
       <TreeView
         data={data}
         multiSelect
         className="p-2.5"
         nodeRenderer={Event}
       />
+
       <CountDown
         dateTime={dayjs('2023-12-14 17:30:00')
           .utc()
           .format('YYYY-MM-DDTHH:mm:ss[Z]')}
-        running={true}
+        pausedTimes={[
+          {
+            start: '2024-06-01 10:00:00',
+            // end: '2024-06-10 18:00:00',
+          },
+        ]}
       />
     </section>
   );

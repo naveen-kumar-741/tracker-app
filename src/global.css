@@ -13,7 +13,10 @@
   --toggle-shadow: 1px 1px 4px 0px #0000001a;
 
   --primary: #1c11f4;
+  --primary-75: #1c11f4bf;
+  --primary-50: #1c11f480;
   --primary-10: #1c11f41a;
+  --primary-05: #1c11f40d;
 }
 
 [data-theme='dark'] {

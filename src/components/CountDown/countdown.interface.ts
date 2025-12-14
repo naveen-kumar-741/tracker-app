@@ -1,7 +1,7 @@
 export interface ICountDownProps {
   dateTime: string;
-  running: boolean;
   size?: number;
+  pausedTimes?: IPausedTime[];
 }
 
 export interface ICubeProps {

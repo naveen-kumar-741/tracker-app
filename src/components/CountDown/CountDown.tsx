@@ -10,7 +10,11 @@ import { initialUnitState } from './countdown.constant';
 
 dayjs.extend(utc);
 
-const CountDown: React.FC<ICountDownProps> = ({ dateTime, size = 30 }) => {
+const CountDown: React.FC<ICountDownProps> = ({
+  dateTime,
+  size = 30,
+  pausedTimes,
+}) => {
   const [units, setUnits] = useState<IUnitsState>(initialUnitState);
   const [rotation, setRotation] = useState<IUnitsState>(initialUnitState);
 
@@ -25,12 +29,7 @@ const CountDown: React.FC<ICountDownProps> = ({ dateTime, size = 30 }) => {
     }
 
     const updateUnits = () => {
-      const nextUnits = getCalendarDiffFromNow(dateTime, [
-        {
-          start: '2024-06-01 10:00:00',
-          // end: '2024-06-10 18:00:00',
-        },
-      ]);
+      const nextUnits = getCalendarDiffFromNow(dateTime, pausedTimes);
       setUnits((prevUnits) => {
         setRotation((prevRotation) => {
           const updated = { ...prevRotation };
