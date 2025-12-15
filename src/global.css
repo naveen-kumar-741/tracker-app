@@ -55,6 +55,10 @@ code {
     monospace;
 }
 
+.react-select__menu-portal {
+  z-index: 9999;
+}
+
 .hide-scroll-bar::-webkit-scrollbar {
   display: none;
 }
@@ -64,4 +68,9 @@ code {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   scroll-behavior: smooth;
+}
+
+.react-datepicker__current-month,
+.react-datepicker-time__header {
+  font-size: 0.75rem !important;
 }

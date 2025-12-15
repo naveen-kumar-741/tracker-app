@@ -10,6 +10,7 @@ const App = () => {
     <AppProvider>
       <ThemeProvider>
         <BrowserRouter>
+          <div id="datepicker-portal"></div>
           <Routes>
             <Route path="/" element={<Navigate to="/events" />} />
             <Route

@@ -27,14 +27,21 @@ const TrackerDropDown: React.FC<ITrackerDropDownProps> = ({
       <Select
         options={options}
         value={value}
-        onChange={(option) => {
-          if (!option) return;
-          option;
-          onChange(option.value);
-        }}
+        onChange={(option) => option && onChange(option.value)}
         placeholder="Select tag"
         isClearable={false}
-        className={` ${className}`}
+        className={className}
+        classNamePrefix="react-select"
+        menuPortalTarget={document.body}
+        menuPosition="fixed"
+        menuShouldBlockScroll={true}
+        closeMenuOnScroll={false}
+        styles={{
+          menuPortal: (base) => ({
+            ...base,
+            zIndex: 60,
+          }),
+        }}
         classNames={{
           control: () =>
             'h-7.5 min-h-7.5! text-(--dark) border border-(--bg-dark-10)! rounded-sm text-sm w-full outline-none focus:border-(--bg-dark-20)! focus-visible:border-(--bg-dark-20)! bg-transparent!',

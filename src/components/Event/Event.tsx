@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import type { INodeRendererProps } from 'react-accessible-treeview';
 import type { IFlatMetadata } from 'react-accessible-treeview/dist/TreeView/utils';
 import DownArrow from '../../assets/down_arrow.svg?react';
@@ -17,7 +16,7 @@ const Event = ({
     <div
       {...getNodeProps()}
       style={{ paddingLeft: 20 * (level - 1) }}
-      className="min-w-75"
+      className={`min-w-75 ${isBranch ? 'cursor-pointer' : 'cursor-default'}`}
     >
       <div className="py-1 px-2 bg-(--primary-05) mb-1 rounded-xs flex gap-1 items-center ">
         {isBranch && (

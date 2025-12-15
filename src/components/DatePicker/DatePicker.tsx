@@ -12,6 +12,7 @@ const TackerDatePicker: React.FC<ITackerDatePickerProps> = ({
   wrapperClassName = '',
   className = '',
 }) => {
+  const isMobile = window.innerWidth < 640;
   return (
     <div className={`flex flex-col gap-1 px-1 ${wrapperClassName}`}>
       {label && (
@@ -29,8 +30,12 @@ const TackerDatePicker: React.FC<ITackerDatePickerProps> = ({
         showTimeSelect
         dateFormat="Pp"
         placeholderText="Select date & time"
+        portalId={!isMobile ? 'datepicker-portal' : undefined}
+        withPortal={isMobile}
+        popperClassName="z-60!"
         wrapperClassName="h-7.5"
-        className={`text-(--dark) border border-(--bg-dark-10) rounded-sm text-sm px-2 py-1 w-full outline-none focus:border-(--bg-dark-20) focus-visible:border-(--bg-dark-20)! ${className}`}
+        calendarClassName="text-xs"
+        className={`text-(--dark) border border-(--bg-dark-10) rounded-sm text-sm px-2 py-1 w-full ${className}`}
       />
       {error && (
         <Typography

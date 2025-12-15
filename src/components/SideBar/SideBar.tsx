@@ -35,7 +35,7 @@ const SideBar: React.FC = () => {
     <aside
       className={`h-full shadow-(--main-shadow) flex-col ${
         isExpand ? 'w-65' : 'w-18'
-      } px-2.5 py-5 items-center gap-6 transition-all hidden sm:flex z-1`}
+      } px-2.5 py-5 items-center gap-6 transition-all hidden md:flex z-1`}
     >
       {isExpand ? (
         <Logo className="h-12.5 w-auto" />
@@ -64,7 +64,7 @@ const SideBar: React.FC = () => {
           </button>
         ))}
       </section>
-      <section className="hidden sm:flex justify-center items-center gap-2 w-full px-2">
+      <section className="hidden md:flex justify-center items-center gap-2 w-full px-2">
         {isExpand && (
           <Typography
             label="Collapse"

@@ -19,20 +19,20 @@ const TrackerModal: React.FC<PropsWithChildren<ITrackerModalProps>> = ({
   if (!show) return null;
   return createPortal(
     <aside className="fixed top-0 left-0 h-screen w-screen bg-(--bg-dark-10) z-50 backdrop-blur-[1px] flex">
-      <section className="relative m-auto w-[calc(100vw-32px)] max-w-150 h-70 max-h-[calc(100vh-32px)] bg-(--light) rounded-sm flex flex-col p-5 gap-4">
+      <section className="relative m-auto w-[calc(100vw-32px)] max-w-150 h-85 max-h-[calc(100vh-32px)] bg-(--light) rounded-sm flex flex-col px-5 py-4 gap-4 overflow-auto">
         {loading && (
           <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center text-(--primary) bg-(--bg-dark-05) backdrop-blur-[1px]">
             <LoadingIcon className="w-8 h-8" />
           </div>
         )}
-        <header className="w-full">
+        <header className="w-full sticky top-0 bg-(--light) py-1">
           <Typography
             label={title}
             variant={typographyVariants.sub_heading_18_600}
           />
         </header>
         <main className="flex-1">{children}</main>
-        <footer className="w-full flex justify-end gap-2">
+        <footer className="w-full flex justify-end gap-2 sticky bottom-0 bg-(--light) py-1">
           <Button
             label="Cancel"
             className="bg-transparent border border-(--primary) text-(--primary)!"

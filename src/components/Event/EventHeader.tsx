@@ -9,7 +9,7 @@ import Typography from '../Typography/Typography';
 import Button from '../Button/Button';
 import CreateEventModal from '../Modal/CreateEventModal';
 
-const EventHeader: React.FC = () => {
+const EventHeader: React.FC<{ hideAction: boolean }> = ({ hideAction }) => {
   const tags = useLiveQuery<ITag[]>(() => db.table('tags').toArray(), []);
 
   const [selectedTag, setSelectedTag] = useState<ITag>();
@@ -65,11 +65,14 @@ const EventHeader: React.FC = () => {
           <AddIcon className="w-6 h-6 text-(--dark)" />
         </div>
       </div>
-      <Button
-        label="New Events"
-        icon={<AddIcon className="w-5 h-5 text-white" />}
-        onClick={() => setShow(true)}
-      />
+      {!hideAction && (
+        <Button
+          label="New Events"
+          icon={<AddIcon className="w-5 h-5 text-white" />}
+          onClick={() => setShow(true)}
+          className="fixed md:relative w-full md:w-auto bottom-0 left-0"
+        />
+      )}
       <CreateEventModal show={show} onClose={onClose} />
     </header>
   );

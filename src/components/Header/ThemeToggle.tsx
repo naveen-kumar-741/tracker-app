@@ -6,7 +6,7 @@ import { useTheme } from '../../providers/ThemeProvider';
 import type { ThemeToggleProps } from './header.interface';
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({
-  className = 'hidden sm:flex',
+  className = 'hidden md:flex',
 }) => {
   const { theme, setTheme } = useTheme();
   return (

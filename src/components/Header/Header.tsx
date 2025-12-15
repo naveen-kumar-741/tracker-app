@@ -41,18 +41,18 @@ const Header: React.FC = () => {
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 left-0 w-full shadow-(--header-shadow) p-2.5 sm:p-5 flex gap-2 justify-between items-center bg-(--light) z-10"
+      className="sticky top-0 left-0 w-full shadow-(--header-shadow) p-2.5 md:p-5 flex gap-2 justify-between items-center bg-(--light) z-10"
     >
       <div className="w-full flex items-center justify-between">
-        <Logo className="w-auto h-10 sm:hidden" />
+        <Logo className="w-auto h-10 md:hidden" />
         <HamburgerIcon
-          className="w-6 h-6 sm:hidden"
+          className="w-6 h-6 md:hidden"
           onClick={() => setShowMenu((prev) => !prev)}
         />
         <Typography
           label={currentPageDetails?.label ?? ''}
           variant={typographyVariants.heading_24_700}
-          className="hidden sm:block"
+          className="hidden md:block"
         />
         <ThemeToggle />
       </div>

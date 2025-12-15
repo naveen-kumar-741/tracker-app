@@ -7,7 +7,12 @@ import dayjs from 'dayjs';
 import EventHeader from '../components/Event/EventHeader';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../utils/indexedDB';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import Typography from '../components/Typography/Typography';
+import { typographyVariants } from '../components/Typography/typo.interface';
+import CreateEventModal from '../components/Modal/CreateEventModal';
+import Button from '../components/Button/Button';
+import AddIcon from '../assets/add_icon.svg?react';
 
 const EventsPage: React.FC = () => {
   const data: INode<IFlatMetadata>[] = [
@@ -37,6 +42,7 @@ const EventsPage: React.FC = () => {
     () => db.table('events').toArray(),
     []
   );
+  const [show, setShow] = useState<boolean>(false);
 
   const formattedData = useMemo(() => {
     if (!events) return [];
@@ -53,15 +59,30 @@ const EventsPage: React.FC = () => {
 
   return (
     <section className="flex flex-col w-full">
-      <EventHeader />
-      {formattedData?.length > 0 && (
+      <EventHeader hideAction={!(formattedData?.length > 1)} />
+      {formattedData?.length > 1 ? (
         <TreeView
           data={formattedData}
           multiSelect
           className="p-2.5"
           nodeRenderer={Event}
         />
+      ) : (
+        <div className="flex-1 flex justify-center items-center">
+          <div className="flex flex-col gap-3 justify-center items-center">
+            <Typography
+              label="No events yet, Create one"
+              variant={typographyVariants.sub_heading_18_500}
+            />
+            <Button
+              label="New Events"
+              icon={<AddIcon className="w-5 h-5 text-white" />}
+              onClick={() => setShow(true)}
+            />
+          </div>
+        </div>
       )}
+      <CreateEventModal show={show} onClose={() => setShow(false)} />
     </section>
   );
 };
