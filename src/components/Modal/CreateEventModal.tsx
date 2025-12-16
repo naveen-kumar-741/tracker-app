@@ -43,6 +43,7 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
       name: data.name,
       children: [],
       parent: data.parent,
+      tagId: data.tagId,
       metadata: {
         startTime: data.startTime,
         endTime: data.endTime,
@@ -153,6 +154,7 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
                 onChange={field.onChange}
                 error={fieldState?.error?.message}
                 wrapperClassName="w-1/2"
+                isClearable={true}
               />
             );
           }}

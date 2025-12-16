@@ -1,18 +1,18 @@
 import type React from 'react';
 import TreeView, { type INode } from 'react-accessible-treeview';
 import type { IFlatMetadata } from 'react-accessible-treeview/dist/TreeView/utils';
-import Event from '../components/Event/Event';
-import CountDown from '../components/CountDown/CountDown';
-import dayjs from 'dayjs';
-import EventHeader from '../components/Event/EventHeader';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '../utils/indexedDB';
-import { useMemo, useState } from 'react';
-import Typography from '../components/Typography/Typography';
-import { typographyVariants } from '../components/Typography/typo.interface';
-import CreateEventModal from '../components/Modal/CreateEventModal';
+import Event from '../components/Event/Event';
 import Button from '../components/Button/Button';
 import AddIcon from '../assets/add_icon.svg?react';
+import NoEventIcon from '../assets/no_event_icon.svg?react';
+import EventHeader from '../components/Event/EventHeader';
+import Typography from '../components/Typography/Typography';
+import CreateEventModal from '../components/Modal/CreateEventModal';
+import { db } from '../utils/indexedDB';
+import { useContext, useMemo, useState } from 'react';
+import { typographyVariants } from '../components/Typography/typo.interface';
+import { AppContext } from '../providers/AppProvider';
 
 const EventsPage: React.FC = () => {
   const data: INode<IFlatMetadata>[] = [
@@ -38,9 +38,16 @@ const EventsPage: React.FC = () => {
     { name: 'Event 10', id: 10, parent: 0, children: [] },
     { name: 'Event 11', id: 11, parent: 0, children: [] },
   ];
+  const { selectedTag } = useContext(AppContext);
+
   const events = useLiveQuery<INode<IFlatMetadata>[]>(
-    () => db.table('events').toArray(),
-    []
+    () =>
+      db
+        .table('events')
+        .where(`tagId`)
+        .equals(selectedTag?.id ?? '')
+        .toArray(),
+    [selectedTag]
   );
   const [show, setShow] = useState<boolean>(false);
 
@@ -69,10 +76,12 @@ const EventsPage: React.FC = () => {
         />
       ) : (
         <div className="flex-1 flex justify-center items-center">
-          <div className="flex flex-col gap-3 justify-center items-center">
+          <div className="flex flex-col gap-2 justify-center items-center">
+            <NoEventIcon className="h-18 w-18" />
             <Typography
-              label="No events yet, Create one"
+              label={`No ${selectedTag?.name ?? ''} events yet`}
               variant={typographyVariants.sub_heading_18_500}
+              className="text-(--primary-75)"
             />
             <Button
               label="New Events"

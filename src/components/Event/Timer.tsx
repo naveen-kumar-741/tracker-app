@@ -26,7 +26,9 @@ const Timer: React.FC<ITimerProps> = ({ startTime, endTime }) => {
   }, [startTime]);
 
   if (isEnded) {
-    return <>ended</>;
+    return (
+      <Typography label="Ended" variant={typographyVariants.caption_12_500} />
+    );
   }
 
   return (

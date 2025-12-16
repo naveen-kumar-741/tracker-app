@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import type { ITag } from './event.interface';
 import { bulkAddTags, db } from '../../utils/indexedDB';
@@ -8,11 +8,12 @@ import AddIcon from '../../assets/add_icon.svg?react';
 import Typography from '../Typography/Typography';
 import Button from '../Button/Button';
 import CreateEventModal from '../Modal/CreateEventModal';
+import { AppContext } from '../../providers/AppProvider';
 
 const EventHeader: React.FC<{ hideAction: boolean }> = ({ hideAction }) => {
+  const { selectedTag, setSelectedTag } = useContext(AppContext);
   const tags = useLiveQuery<ITag[]>(() => db.table('tags').toArray(), []);
 
-  const [selectedTag, setSelectedTag] = useState<ITag>();
   const [show, setShow] = useState<boolean>(false);
 
   const onClose = () => {

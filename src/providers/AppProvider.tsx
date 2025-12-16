@@ -8,11 +8,14 @@ import type {
   ICurrentUserData,
 } from '../interfaces/app.interface';
 import { SideBarMenu } from '../constant';
+import type { ITag } from '../components/Event/event.interface';
 
 export const AppContext = createContext<AppContextType>({
   currentUserData: undefined,
   currentPageDetails: SideBarMenu[0],
   setCurrentPageDetails: () => {},
+  selectedTag: undefined,
+  setSelectedTag: () => {},
 });
 
 export default function AppProvider({ children }: PropsWithChildren) {
@@ -20,6 +23,7 @@ export default function AppProvider({ children }: PropsWithChildren) {
   const [currentUserData, _setCurrentUserData] = useState<ICurrentUserData>();
   const [currentPageDetails, setCurrentPageDetails] =
     useState<ICurrentPageDetails>(SideBarMenu[0]);
+  const [selectedTag, setSelectedTag] = useState<ITag>();
 
   return (
     <IntlProvider
@@ -32,6 +36,8 @@ export default function AppProvider({ children }: PropsWithChildren) {
           currentUserData,
           currentPageDetails,
           setCurrentPageDetails,
+          selectedTag,
+          setSelectedTag,
         }}
       >
         {children}

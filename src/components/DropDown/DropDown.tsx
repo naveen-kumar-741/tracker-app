@@ -12,6 +12,7 @@ const TrackerDropDown: React.FC<ITrackerDropDownProps> = ({
   onChange,
   wrapperClassName = '',
   className = '',
+  isClearable = false,
 }) => {
   return (
     <div className={`flex flex-col gap-1 px-1 ${wrapperClassName}`}>
@@ -27,9 +28,9 @@ const TrackerDropDown: React.FC<ITrackerDropDownProps> = ({
       <Select
         options={options}
         value={value}
-        onChange={(option) => option && onChange(option.value)}
+        onChange={(option) => onChange(option?.value ?? 0)}
         placeholder="Select tag"
-        isClearable={false}
+        isClearable={isClearable}
         className={className}
         classNamePrefix="react-select"
         menuPortalTarget={document.body}

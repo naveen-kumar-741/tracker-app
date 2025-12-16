@@ -14,6 +14,7 @@ export interface IEventTypePayload {
   name: string;
   children: never[];
   parent: number;
+  tagId: number;
   metadata: { startTime: string; endTime: string };
 }
 
