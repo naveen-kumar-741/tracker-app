@@ -38,6 +38,11 @@ export const typographyVariants = {
   caption_12_500: 'text-xs font-medium text-gray-500',
   caption_12_600: 'text-xs font-semibold text-gray-500',
   caption_12_700: 'text-xs font-bold text-gray-500',
+
+  default_400: 'font-normal',
+  default_500: 'font-medium',
+  default_600: 'font-semibold',
+  default_700: 'font-bold',
 } as const;
 
 export type TypoEnumType =

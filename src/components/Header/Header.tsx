@@ -12,12 +12,10 @@ import ThemeToggle from './ThemeToggle';
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const headerRef = useRef<HTMLDivElement>(null);
-  const { setCurrentPageDetails } = useContext(AppContext);
   const { currentPageDetails } = useContext(AppContext);
   const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const OnNavigation = (menu: ISideBarMenu) => {
-    setCurrentPageDetails(menu);
     navigate(menu.route);
   };
 

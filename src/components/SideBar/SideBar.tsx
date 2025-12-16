@@ -19,7 +19,6 @@ const SideBar: React.FC = () => {
   const [isExpand, setIsExpand] = useState<boolean>(true);
 
   const OnNavigation = (menu: ISideBarMenu) => {
-    setCurrentPageDetails(menu);
     navigate(menu.route);
   };
 
@@ -28,6 +27,12 @@ const SideBar: React.FC = () => {
       setIsExpand(true);
       searchParams.delete('expandSideBar');
       setSearchParams(searchParams);
+    }
+    const currentMenu = SideBarMenu.find(
+      (menu) => menu.route === location.pathname
+    );
+    if (currentMenu) {
+      setCurrentPageDetails(currentMenu);
     }
   }, [location]);
 

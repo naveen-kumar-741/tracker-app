@@ -7,7 +7,7 @@ interface PropType {
 
 const CommonLayout: React.FC<PropType> = ({ component: Component }) => {
   return (
-    <main className="w-screen h-screen overflow-x-hidden overflow-y-auto bg-(--light) flex">
+    <main className="w-screen h-dvh overflow-x-hidden overflow-y-auto bg-(--light) flex">
       <SideBar />
       <section className="flex-1 flex flex-col items-start overflow-auto relative">
         <Header />

@@ -53,7 +53,9 @@ const Cube: React.FC<ICubeProps> = ({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    setDynamicWidth(containerRef?.current.offsetWidth);
+    const width = containerRef?.current.offsetWidth;
+
+    setDynamicWidth(size > width ? size : width);
   }, [units]);
 
   if (!show) {
@@ -71,7 +73,7 @@ const Cube: React.FC<ICubeProps> = ({
         <div className="inline-flex p-1 text-nowrap" style={{ height: size }}>
           <Typography
             label={`${String(units).padStart(2, '0')}${suffix}`}
-            variant={typographyVariants.body_14_600}
+            variant={typographyVariants.default_600}
           />
         </div>
       </div>
@@ -100,7 +102,7 @@ const Cube: React.FC<ICubeProps> = ({
             >
               <Typography
                 label={`${String(units).padStart(2, '0')}${suffix}`}
-                variant={typographyVariants.body_14_600}
+                variant={typographyVariants.default_600}
               />
             </div>
           ))}

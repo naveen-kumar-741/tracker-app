@@ -14,6 +14,8 @@ const CountDown: React.FC<ICountDownProps> = ({
   dateTime,
   size = 30,
   pausedTimes,
+  running = true,
+  className = '',
 }) => {
   const [units, setUnits] = useState<IUnitsState>(initialUnitState);
   const [rotation, setRotation] = useState<IUnitsState>(initialUnitState);
@@ -48,8 +50,9 @@ const CountDown: React.FC<ICountDownProps> = ({
         return nextUnits;
       });
     };
-
-    intervalRef.current = window.setInterval(updateUnits, 1000);
+    if (running) {
+      intervalRef.current = window.setInterval(updateUnits, 1000);
+    }
     updateUnits();
 
     return () => {
@@ -58,10 +61,10 @@ const CountDown: React.FC<ICountDownProps> = ({
         intervalRef.current = null;
       }
     };
-  }, [max]);
+  }, [max, running]);
 
   return (
-    <div className="flex">
+    <div className={`flex ${className}`}>
       <Cube
         size={size}
         suffix="Y"

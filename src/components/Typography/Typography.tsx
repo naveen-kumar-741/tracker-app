@@ -18,6 +18,7 @@ const Typography: React.FC<TypographyProps> = ({
     heading_30: 'h2',
     heading_24: 'h3',
     body_: 'p',
+    default_: 'span',
   };
 
   const Tag =

@@ -2,6 +2,8 @@ export interface ICountDownProps {
   dateTime: string;
   size?: number;
   pausedTimes?: IPausedTime[];
+  running?: boolean;
+  className?: string;
 }
 
 export interface ICubeProps {
