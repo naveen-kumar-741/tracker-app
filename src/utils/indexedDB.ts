@@ -20,7 +20,6 @@ db.version(1).stores({
 });
 
 export const addEvent = async (event: IEventTypePayload) => {
-  debugger;
   const addedEventId = await db.table('events').add(event);
 
   if (event.parent) {
@@ -42,8 +41,3 @@ export const bulkAddTags = async (event: ITagPayload[]) => {
 export const updateEvent = async (id: number, data: IEventType) => {
   await db.table('events').update(id, data);
 };
-
-// export const deleteData = async (id: number) => {
-//   await db.table('users').delete(id);
-//   console.log(`User ${id} deleted`);
-// };

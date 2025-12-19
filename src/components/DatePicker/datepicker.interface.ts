@@ -5,4 +5,7 @@ export interface ITackerDatePickerProps {
   wrapperClassName?: string;
   label?: string;
   error?: string;
+  minDate?: Date;
+  minTime?: Date;
+  maxTime?: Date;
 }

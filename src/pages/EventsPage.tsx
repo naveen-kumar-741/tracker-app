@@ -39,8 +39,6 @@ const EventsPage: React.FC = () => {
     ];
   }, [events]);
 
-  console.log('events', events);
-
   return (
     <section className="flex flex-col w-full">
       <EventHeader hideAction={!(formattedData?.length > 1)} />

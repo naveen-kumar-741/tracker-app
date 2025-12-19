@@ -7,6 +7,7 @@ export interface ITrackerDropDownProps {
   label?: string;
   error?: string;
   isClearable?: boolean;
+  isDisabled?: boolean;
 }
 
 export interface IOption {

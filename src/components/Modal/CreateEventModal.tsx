@@ -1,12 +1,12 @@
 import type React from 'react';
 import TrackerModal from './TrackerModal';
 import type { IModalProps } from './modal.interface';
-import { useRef } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useEffect, useRef } from 'react';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { EventSchema, type EventFormValues } from '../../utils/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputField from '../InputField/InputField';
-import DatePicker from '../DatePicker/DatePicker';
+import TackerDatePicker from '../DatePicker/DatePicker';
 import dayjs from 'dayjs';
 import TrackerDropDown from '../DropDown/DropDown';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -16,17 +16,15 @@ import type { INode } from 'react-accessible-treeview';
 import type { IFlatMetadata } from 'react-accessible-treeview/dist/TreeView/utils';
 
 const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
-  const tags = useLiveQuery<ITag[]>(() => db.table('tags').toArray(), []);
-  const events = useLiveQuery<INode<IFlatMetadata>[]>(
-    () => db.table('events').toArray(),
-    []
-  );
   const formRef = useRef<HTMLFormElement>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     control,
+    setValue,
+    reset,
   } = useForm<EventFormValues>({
     resolver: zodResolver(EventSchema),
     mode: 'onBlur',
@@ -37,6 +35,35 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
       parent: 0,
     },
   });
+
+  const startTime = useWatch({
+    control,
+    name: 'startTime',
+  });
+  const endTime = useWatch({
+    control,
+    name: 'endTime',
+  });
+  const tagId = useWatch({
+    control,
+    name: 'tagId',
+  });
+
+  const tags = useLiveQuery<ITag[]>(() => db.table('tags').toArray(), []);
+  const events = useLiveQuery<INode<IFlatMetadata>[]>(
+    () =>
+      db
+        .table('events')
+        .where(`tagId`)
+        .equals(tagId ?? '')
+        .toArray(),
+    [tagId]
+  );
+
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
 
   const handleCreateEvent = async (data: EventFormValues) => {
     await addEvent({
@@ -49,13 +76,19 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
         endTime: data.endTime,
       },
     });
-    onClose();
+    handleClose();
   };
+
+  useEffect(() => {
+    if (startTime && endTime && dayjs(endTime).isBefore(startTime)) {
+      setValue('endTime', startTime);
+    }
+  }, [startTime]);
 
   return (
     <TrackerModal
       show={show}
-      onClose={onClose}
+      onClose={handleClose}
       onSubmit={() => handleSubmit(handleCreateEvent)()}
       title={'Create a New Event'}
       submitLabel="Create"
@@ -98,10 +131,13 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
           name="startTime"
           control={control}
           render={({ field, fieldState }) => (
-            <DatePicker
+            <TackerDatePicker
               label="Start Time"
               wrapperClassName="w-1/2"
               value={field.value ? new Date(field.value) : null}
+              minDate={new Date()}
+              minTime={new Date()}
+              maxTime={dayjs().endOf('day').toDate()}
               onChange={(date) => {
                 if (!date) {
                   field.onChange('');
@@ -119,24 +155,34 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
         <Controller
           name="endTime"
           control={control}
-          render={({ field, fieldState }) => (
-            <DatePicker
-              label="End Time"
-              wrapperClassName="w-1/2"
-              value={field.value ? new Date(field.value) : null}
-              onChange={(date) => {
-                if (!date) {
-                  field.onChange('');
-                  return;
+          render={({ field, fieldState }) => {
+            const start = startTime ? new Date(startTime) : null;
+            return (
+              <TackerDatePicker
+                label="End Time"
+                wrapperClassName="w-1/2"
+                minDate={start ?? new Date()}
+                minTime={
+                  start && dayjs(start).isSame(dayjs(), 'day')
+                    ? start
+                    : new Date()
                 }
+                maxTime={dayjs().endOf('day').toDate()}
+                value={field.value ? new Date(field.value) : null}
+                onChange={(date) => {
+                  if (!date) {
+                    field.onChange('');
+                    return;
+                  }
 
-                field.onChange(
-                  dayjs(date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
-                );
-              }}
-              error={fieldState?.error?.message}
-            />
-          )}
+                  field.onChange(
+                    dayjs(date).utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
+                  );
+                }}
+                error={fieldState?.error?.message}
+              />
+            );
+          }}
         />
         <Controller
           name="parent"
@@ -155,6 +201,7 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
                 error={fieldState?.error?.message}
                 wrapperClassName="w-1/2"
                 isClearable={true}
+                isDisabled={!tagId}
               />
             );
           }}

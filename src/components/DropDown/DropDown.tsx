@@ -13,9 +13,14 @@ const TrackerDropDown: React.FC<ITrackerDropDownProps> = ({
   wrapperClassName = '',
   className = '',
   isClearable = false,
+  isDisabled = false,
 }) => {
   return (
-    <div className={`flex flex-col gap-1 px-1 ${wrapperClassName}`}>
+    <div
+      className={`flex flex-col gap-1 px-1 ${
+        isDisabled ? 'opacity-50' : ''
+      } ${wrapperClassName}`}
+    >
       {label && (
         <label>
           <Typography
@@ -51,6 +56,7 @@ const TrackerDropDown: React.FC<ITrackerDropDownProps> = ({
           option: () => 'py-1! px-2!',
           singleValue: () => ' text-(--dark)!',
         }}
+        isDisabled={isDisabled}
       />
       {error && (
         <Typography

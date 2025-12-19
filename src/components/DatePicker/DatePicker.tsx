@@ -3,6 +3,7 @@ import type { ITackerDatePickerProps } from './datepicker.interface';
 import Typography from '../Typography/Typography';
 import { typographyVariants } from '../Typography/typo.interface';
 import DatePicker from 'react-datepicker';
+import dayjs from 'dayjs';
 
 const TackerDatePicker: React.FC<ITackerDatePickerProps> = ({
   label,
@@ -11,6 +12,9 @@ const TackerDatePicker: React.FC<ITackerDatePickerProps> = ({
   onChange,
   wrapperClassName = '',
   className = '',
+  minDate = new Date(),
+  minTime = dayjs().startOf('day').toDate(),
+  maxTime = dayjs().endOf('day').toDate(),
 }) => {
   const isMobile = window.innerWidth < 640;
   return (
@@ -36,6 +40,9 @@ const TackerDatePicker: React.FC<ITackerDatePickerProps> = ({
         wrapperClassName="h-7.5"
         calendarClassName="text-xs"
         className={`text-(--dark) border border-(--bg-dark-10) rounded-sm text-sm px-2 py-1 w-full ${className}`}
+        minDate={minDate}
+        minTime={minTime}
+        maxTime={maxTime}
       />
       {error && (
         <Typography
