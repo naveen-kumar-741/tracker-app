@@ -16,11 +16,13 @@ const TrackerMenu: React.FC<ITrackerMenuProps> = ({
           key={menu.label}
           onMouseDown={() => onSelect({ icon: Icon, ...menu })}
         >
-          {Icon && <Icon className="h-4 w-auto  text-(--dark)" />}
+          {Icon && (
+            <Icon className={`h-4 w-auto text-${menu.color ?? '(--dark)'}`} />
+          )}
           <Typography
             label={menu.label}
             variant={typographyVariants.body_14_400}
-            className="flex-1 text-left"
+            className={`flex-1 text-left text-${menu.color ?? '(--dark)'}`}
           />
         </button>
       ))}

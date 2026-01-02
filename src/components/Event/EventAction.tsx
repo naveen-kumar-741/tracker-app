@@ -19,6 +19,7 @@ const EventAction: React.FC<IEventActionProps> = ({ onClose, onSelect }) => {
     {
       label: 'Delete',
       icon: DeleteIcon,
+      color: 'red-500',
     },
   ];
 

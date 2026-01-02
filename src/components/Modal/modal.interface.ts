@@ -5,6 +5,9 @@ export interface ITrackerModalProps extends IModalProps {
   submitLabel?: string;
   onSubmit: () => void;
   loading?: boolean;
+  primaryBtnClassName?: string;
+  secondaryBtnClassName?: string;
+  overlayClassName?: string;
 }
 
 export interface IModalProps {
@@ -14,4 +17,12 @@ export interface IModalProps {
 
 export interface ICreateOrEditEventModalProps extends IModalProps {
   eventId?: NodeId;
+}
+
+export interface IConfirmationPopupProps extends IModalProps {
+  onConfirm: () => void;
+  title: string;
+  warningMsg?: string;
+  confirmMsg: string;
+  loading?: boolean;
 }

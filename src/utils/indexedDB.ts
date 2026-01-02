@@ -29,15 +29,20 @@ export const addEvent = async (event: IEventTypePayload) => {
   }
 };
 
-export const getAllEvents = async () => {
-  const user = await db.table('events').toArray();
-  return user;
-};
-
 export const bulkAddTags = async (event: ITagPayload[]) => {
   await db.table('tags').bulkAdd(event);
 };
 
 export const updateEvent = async (id: number, data: IEventType) => {
   await db.table('events').update(id, data);
+};
+
+export const deleteEvent = async (id: number) => {
+  const event: IEventType = await db.table('events').get(id);
+  if (event.children?.length > 0) {
+    event.children.forEach((child) => {
+      deleteEvent(child);
+    });
+  }
+  await db.table('events').delete(id);
 };

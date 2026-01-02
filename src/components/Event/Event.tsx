@@ -10,6 +10,8 @@ import EventAction from './EventAction';
 import type { MenuOption } from '../Menu/menu.interface';
 import { useState } from 'react';
 import CreateOrEditEventModal from '../Modal/CreateOrEditEventModal';
+import ConfirmationPopup from '../Modal/ConfirmationPopup';
+import { deleteEvent } from '../../utils/indexedDB';
 
 const Event = ({
   element,
@@ -19,6 +21,7 @@ const Event = ({
   level,
 }: INodeRendererProps<IFlatMetadata>) => {
   const [showModal, setShowModal] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onSelect = (option: MenuOption) => {
     setShowModal(option.label);
@@ -26,6 +29,12 @@ const Event = ({
 
   const handleClose = () => {
     setShowModal('');
+  };
+
+  const onDeleteEvent = async () => {
+    setIsLoading(true);
+    await deleteEvent(Number(element.id));
+    setIsLoading(false);
   };
 
   return (
@@ -69,7 +78,7 @@ const Event = ({
             )}
             position="bottom-end"
           >
-            <Menu className="cursor-pointer ml-1" />
+            <Menu className="cursor-pointer ml-1 text-(--dark)" />
           </Popover>
         </div>
       </div>
@@ -78,6 +87,15 @@ const Event = ({
         onClose={handleClose}
         show={showModal === 'Edit'}
         eventId={element.id}
+      />
+      <ConfirmationPopup
+        onConfirm={onDeleteEvent}
+        title="Delete Event"
+        onClose={handleClose}
+        show={showModal === 'Delete'}
+        warningMsg="This action can not be undone."
+        confirmMsg="Are you sure you want to delete this event? You can cancel if this was a mistake."
+        loading={isLoading}
       />
     </div>
   );
