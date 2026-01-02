@@ -3,6 +3,7 @@ import type {
   IPausedTime,
   IUnitsState,
 } from '../components/CountDown/countdown.interface';
+import type { PositionType } from '../components/Popover/popover.interface';
 
 export const NextUnitMap = new Map<keyof IUnitsState, keyof IUnitsState>([
   ['seconds', 'minutes'],
@@ -115,4 +116,56 @@ export const getCalendarDiffFromNow = (
     minutes,
     seconds,
   };
+};
+
+export const getTopPos = (
+  anchorRect: DOMRect,
+  popoverRect: DOMRect,
+  position: PositionType
+) => {
+  switch (position) {
+    case 'bottom':
+    case 'bottom-start':
+    case 'bottom-end':
+      return anchorRect.top + anchorRect.height;
+    case 'top':
+    case 'top-start':
+    case 'top-end':
+      return anchorRect.top - popoverRect.height;
+    case 'left':
+    case 'right':
+      return anchorRect.top - popoverRect.height / 2;
+    default:
+      return 0;
+  }
+};
+
+export const getRightPos = (
+  anchorRect: DOMRect,
+  popoverRect: DOMRect,
+  position: PositionType
+) => {
+  switch (position) {
+    case 'bottom-end':
+    case 'top-end':
+      return window.innerWidth - anchorRect.right;
+    case 'bottom':
+    case 'top':
+      return (
+        window.innerWidth +
+        anchorRect.width / 2 -
+        anchorRect.right -
+        popoverRect.width / 2
+      );
+    case 'bottom-start':
+    case 'top-start':
+      return (
+        window.innerWidth -
+        anchorRect.right +
+        anchorRect.width -
+        popoverRect.width
+      );
+    default:
+      return 0;
+  }
 };

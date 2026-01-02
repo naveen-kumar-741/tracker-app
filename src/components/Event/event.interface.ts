@@ -1,3 +1,6 @@
+import type { NodeId } from 'react-accessible-treeview';
+import type { MenuOption } from '../Menu/menu.interface';
+
 export interface ITimerProps {
   startTime: string;
   endTime: string;
@@ -20,4 +23,10 @@ export interface IEventTypePayload {
 
 export interface IEventType extends IEventTypePayload {
   id: number;
+}
+
+export interface IEventActionProps {
+  eventId: NodeId;
+  onClose: () => void;
+  onSelect: (option: MenuOption) => void;
 }

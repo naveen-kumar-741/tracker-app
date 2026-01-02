@@ -1,6 +1,6 @@
 import type React from 'react';
 import TrackerModal from './TrackerModal';
-import type { IModalProps } from './modal.interface';
+import type { ICreateOrEditEventModalProps } from './modal.interface';
 import { useEffect, useRef } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { EventSchema, type EventFormValues } from '../../utils/form';
@@ -10,12 +10,14 @@ import TackerDatePicker from '../DatePicker/DatePicker';
 import dayjs from 'dayjs';
 import TrackerDropDown from '../DropDown/DropDown';
 import { useLiveQuery } from 'dexie-react-hooks';
-import type { ITag } from '../Event/event.interface';
-import { addEvent, db } from '../../utils/indexedDB';
-import type { INode } from 'react-accessible-treeview';
-import type { IFlatMetadata } from 'react-accessible-treeview/dist/TreeView/utils';
+import type { IEventType, ITag } from '../Event/event.interface';
+import { addEvent, db, updateEvent } from '../../utils/indexedDB';
 
-const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
+const CreateOrEditEventModal: React.FC<ICreateOrEditEventModalProps> = ({
+  show,
+  onClose,
+  eventId,
+}) => {
   const formRef = useRef<HTMLFormElement>(null);
 
   const {
@@ -50,7 +52,7 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
   });
 
   const tags = useLiveQuery<ITag[]>(() => db.table('tags').toArray(), []);
-  const events = useLiveQuery<INode<IFlatMetadata>[]>(
+  const events = useLiveQuery<IEventType[]>(
     () =>
       db
         .table('events')
@@ -60,22 +62,41 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
     [tagId]
   );
 
+  const eventData = useLiveQuery<IEventType | undefined>(
+    () => (eventId ? db.table('events').get(eventId) : undefined),
+    [eventId]
+  );
+
   const handleClose = () => {
     reset();
     onClose();
   };
 
-  const handleCreateEvent = async (data: EventFormValues) => {
-    await addEvent({
-      name: data.name,
-      children: [],
-      parent: data.parent,
-      tagId: data.tagId,
-      metadata: {
-        startTime: data.startTime,
-        endTime: data.endTime,
-      },
-    });
+  const createOrUpdateEvent = async (data: EventFormValues) => {
+    if (eventId) {
+      await updateEvent(Number(eventId), {
+        id: Number(eventId),
+        name: data.name,
+        children: eventData?.children ?? [],
+        parent: data.parent,
+        tagId: data.tagId,
+        metadata: {
+          startTime: data.startTime,
+          endTime: data.endTime,
+        },
+      });
+    } else {
+      await addEvent({
+        name: data.name,
+        children: [],
+        parent: data.parent,
+        tagId: data.tagId,
+        metadata: {
+          startTime: data.startTime,
+          endTime: data.endTime,
+        },
+      });
+    }
     handleClose();
   };
 
@@ -85,18 +106,28 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
     }
   }, [startTime]);
 
+  useEffect(() => {
+    if (eventData) {
+      setValue('endTime', eventData?.metadata?.endTime);
+      setValue('name', eventData.name);
+      setValue('parent', eventData.parent);
+      setValue('startTime', eventData?.metadata?.startTime);
+      setValue('tagId', eventData.tagId);
+    }
+  }, [eventData]);
+
   return (
     <TrackerModal
       show={show}
       onClose={handleClose}
-      onSubmit={() => handleSubmit(handleCreateEvent)()}
-      title={'Create a New Event'}
-      submitLabel="Create"
+      onSubmit={() => handleSubmit(createOrUpdateEvent)()}
+      title={`${eventId ? 'Update' : 'Create'} Event`}
+      submitLabel={eventId ? 'Update' : 'Create'}
       loading={isSubmitting}
     >
       <form
         ref={formRef}
-        onSubmit={handleSubmit(handleCreateEvent)}
+        onSubmit={handleSubmit(createOrUpdateEvent)}
         className="flex flex-wrap"
       >
         <InputField
@@ -123,6 +154,7 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
                 onChange={field.onChange}
                 error={fieldState?.error?.message}
                 wrapperClassName="w-1/2"
+                isDisabled={!!eventId}
               />
             );
           }}
@@ -136,7 +168,11 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
               wrapperClassName="w-1/2"
               value={field.value ? new Date(field.value) : null}
               minDate={new Date()}
-              minTime={new Date()}
+              minTime={
+                !field.value || dayjs(field.value).isSame(dayjs(), 'day')
+                  ? new Date()
+                  : dayjs().startOf('day').toDate()
+              }
               maxTime={dayjs().endOf('day').toDate()}
               onChange={(date) => {
                 if (!date) {
@@ -163,9 +199,9 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
                 wrapperClassName="w-1/2"
                 minDate={start ?? new Date()}
                 minTime={
-                  start && dayjs(start).isSame(dayjs(), 'day')
+                  start && dayjs(field.value).isSame(start, 'day')
                     ? start
-                    : new Date()
+                    : dayjs().startOf('day').toDate()
                 }
                 maxTime={dayjs().endOf('day').toDate()}
                 value={field.value ? new Date(field.value) : null}
@@ -201,7 +237,7 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
                 error={fieldState?.error?.message}
                 wrapperClassName="w-1/2"
                 isClearable={true}
-                isDisabled={!tagId}
+                isDisabled={!tagId || !!eventId}
               />
             );
           }}
@@ -211,4 +247,4 @@ const CreateEventModal: React.FC<IModalProps> = ({ show, onClose }) => {
   );
 };
 
-export default CreateEventModal;
+export default CreateOrEditEventModal;

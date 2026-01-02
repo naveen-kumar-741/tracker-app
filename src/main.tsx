@@ -4,6 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import App from './pages';
 import { registerServiceWorker } from './sw-register';
 
-registerServiceWorker();
+if (import.meta.env.PROD) {
+  registerServiceWorker();
+}
 
 createRoot(document.getElementById('root')!).render(<App />);

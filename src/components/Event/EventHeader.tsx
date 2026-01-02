@@ -7,7 +7,7 @@ import { typographyVariants } from '../Typography/typo.interface';
 import AddIcon from '../../assets/add_icon.svg?react';
 import Typography from '../Typography/Typography';
 import Button from '../Button/Button';
-import CreateEventModal from '../Modal/CreateEventModal';
+import CreateOrEditEventModal from '../Modal/CreateOrEditEventModal';
 import { AppContext } from '../../providers/AppProvider';
 
 const EventHeader: React.FC<{ hideAction: boolean }> = ({ hideAction }) => {
@@ -41,6 +41,7 @@ const EventHeader: React.FC<{ hideAction: boolean }> = ({ hideAction }) => {
         <div className="max-w-[calc(100%-34px)] overflow-auto flex">
           {tags?.map((tag) => (
             <button
+              key={tag.id}
               className={`p-2.5 w-37.5 text-nowrap text-center cursor-pointer border-b-2  ${
                 selectedTag?.name === tag.name
                   ? 'border-(--primary-50)'
@@ -74,7 +75,7 @@ const EventHeader: React.FC<{ hideAction: boolean }> = ({ hideAction }) => {
           className="fixed md:relative w-full md:w-auto bottom-0 left-0"
         />
       )}
-      <CreateEventModal show={show} onClose={onClose} />
+      <CreateOrEditEventModal show={show} onClose={onClose} />
     </header>
   );
 };

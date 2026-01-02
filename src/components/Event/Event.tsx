@@ -1,9 +1,15 @@
 import type { INodeRendererProps } from 'react-accessible-treeview';
 import type { IFlatMetadata } from 'react-accessible-treeview/dist/TreeView/utils';
 import DownArrow from '../../assets/down_arrow.svg?react';
+import Menu from '../../assets/menu.svg?react';
 import Typography from '../Typography/Typography';
 import { typographyVariants } from '../Typography/typo.interface';
 import Timer from './Timer';
+import Popover from '../Popover/Popover';
+import EventAction from './EventAction';
+import type { MenuOption } from '../Menu/menu.interface';
+import { useState } from 'react';
+import CreateOrEditEventModal from '../Modal/CreateOrEditEventModal';
 
 const Event = ({
   element,
@@ -12,6 +18,16 @@ const Event = ({
   isBranch,
   level,
 }: INodeRendererProps<IFlatMetadata>) => {
+  const [showModal, setShowModal] = useState<string>('');
+
+  const onSelect = (option: MenuOption) => {
+    setShowModal(option.label);
+  };
+
+  const handleClose = () => {
+    setShowModal('');
+  };
+
   return (
     <div
       {...getNodeProps()}
@@ -37,7 +53,32 @@ const Event = ({
             endTime={String(element?.metadata?.endTime)}
           />
         )}
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        >
+          <Popover
+            popup={(props) => (
+              <EventAction
+                eventId={element.id}
+                onSelect={onSelect}
+                {...props}
+              />
+            )}
+            position="bottom-end"
+          >
+            <Menu className="cursor-pointer ml-1" />
+          </Popover>
+        </div>
       </div>
+
+      <CreateOrEditEventModal
+        onClose={handleClose}
+        show={showModal === 'Edit'}
+        eventId={element.id}
+      />
     </div>
   );
 };

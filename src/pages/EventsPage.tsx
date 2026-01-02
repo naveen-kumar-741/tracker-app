@@ -8,7 +8,7 @@ import AddIcon from '../assets/add_icon.svg?react';
 import NoEventIcon from '../assets/no_event_icon.svg?react';
 import EventHeader from '../components/Event/EventHeader';
 import Typography from '../components/Typography/Typography';
-import CreateEventModal from '../components/Modal/CreateEventModal';
+import CreateOrEditEventModal from '../components/Modal/CreateOrEditEventModal';
 import { db } from '../utils/indexedDB';
 import { useContext, useMemo, useState } from 'react';
 import { typographyVariants } from '../components/Typography/typo.interface';
@@ -66,7 +66,7 @@ const EventsPage: React.FC = () => {
           </div>
         </div>
       )}
-      <CreateEventModal show={show} onClose={() => setShow(false)} />
+      <CreateOrEditEventModal show={show} onClose={() => setShow(false)} />
     </section>
   );
 };

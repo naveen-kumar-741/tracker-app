@@ -10,6 +10,8 @@ import { typographyVariants } from '../Typography/typo.interface';
 import { SideBarMenu } from '../../constant';
 import type { ISideBarMenu } from '../../interfaces/app.interface';
 import { AppContext } from '../../providers/AppProvider';
+import Popover from '../Popover/Popover';
+import EventAction from '../Event/EventAction';
 
 const SideBar: React.FC = () => {
   const navigate = useNavigate();
@@ -69,6 +71,20 @@ const SideBar: React.FC = () => {
           </button>
         ))}
       </section>
+      <Popover
+        popup={(props) => (
+          <EventAction
+            eventId={1}
+            onSelect={(op) => {
+              console.log('op', op);
+            }}
+            {...props}
+          />
+        )}
+        position="bottom-end"
+      >
+        <div>sfsfd</div>
+      </Popover>
       <section className="hidden md:flex justify-center items-center gap-2 w-full px-2">
         {isExpand && (
           <Typography

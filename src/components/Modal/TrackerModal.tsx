@@ -18,7 +18,10 @@ const TrackerModal: React.FC<PropsWithChildren<ITrackerModalProps>> = ({
 }) => {
   if (!show) return null;
   return createPortal(
-    <aside className="fixed top-0 left-0 h-dvh w-screen bg-(--bg-dark-10) z-50 backdrop-blur-[1px] flex">
+    <aside
+      className="fixed top-0 left-0 h-dvh w-screen bg-(--bg-dark-10) z-50 backdrop-blur-[1px] flex"
+      onClick={(e) => e.stopPropagation()}
+    >
       <section className="relative m-auto w-[calc(100vw-32px)] max-w-150 h-85 max-h-[calc(100vh-32px)] bg-(--light) rounded-sm flex flex-col px-5 py-4 gap-4 overflow-auto">
         {loading && (
           <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center text-(--primary) bg-(--bg-dark-05) backdrop-blur-[1px]">
