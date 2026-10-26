@@ -1,6 +1,8 @@
 import EventIcon from './assets/event_icon.svg?react';
 import StopWatchIcon from './assets/stop_watch.svg?react';
 import SettingIcon from './assets/setting_icon.svg?react';
+import AiIcon from './assets/ai-icon.svg?react';
+
 import type { ISideBarMenu } from './interfaces/app.interface';
 
 export const SideBarMenu: ISideBarMenu[] = [
@@ -18,5 +20,10 @@ export const SideBarMenu: ISideBarMenu[] = [
     label: 'Settings',
     icon: SettingIcon,
     route: '/settings',
+  },
+  {
+    label: 'RAG Dashboard',
+    icon: AiIcon,
+    route: '/ai-memory-rag-dashboard',
   },
 ];

@@ -4,6 +4,8 @@ import AppProvider from '../providers/AppProvider';
 import EventsPage from './EventsPage';
 import { ThemeProvider } from '../providers/ThemeProvider';
 import StopWatch from './StopWatch';
+import { AIMemoryDashboard } from 'ai-memory-rag-dashboard';
+import 'ai-memory-rag-dashboard/css';
 
 const App = () => {
   return (
@@ -24,6 +26,10 @@ const App = () => {
             <Route
               path="/settings"
               element={<CommonLayout component={StopWatch} />}
+            />
+            <Route
+              path="/ai-memory-rag-dashboard"
+              element={<CommonLayout component={AIMemoryDashboard} />}
             />
             <Route path="*" element={<>Not Found Page</>} />
           </Routes>
