@@ -13,7 +13,7 @@
     "@apollo/client": "^4.0.9",
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.17",
-    "ai-memory-rag-dashboard": "^1.0.1",
+    "ai-memory-rag-dashboard": "^1.0.2",
     "dayjs": "^1.11.19",
     "dexie": "^4.2.1",
     "dexie-react-hooks": "^4.2.0",
